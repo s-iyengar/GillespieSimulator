@@ -172,7 +172,8 @@ template<typename system>
 std::tuple<state_t,ND_avg_var_cov> average_and_corrs_from_system_threshold(system s, state_t i_state, double threshold,int Navg,rand_eng eng){
 	store_corrs_avgs res(i_state.size());
 	gsim_cb_thres(s,res,i_state,threshold,eng);
-	state_t uavg = res.avgstore.averageState();
+	std::vector<precision> uavg_p = res.avgstore.averageState();
+	state_t uavg(uavg_p.begin(), uavg_p.end());
 	return {uavg,res.covstore};
 }
 
@@ -181,7 +182,8 @@ template<typename system>
 state_t average_from_system_threshold(system s, state_t u_state,double threshold,int Navg,rand_eng eng){
 	averagestate pert_res(u_state.size());
 	gsim_cb_thres(s,pert_res,u_state,threshold,eng);
-	state_t newavg = pert_res.averageState();
+	std::vector<precision> newavg_p = pert_res.averageState();
+	state_t newavg(newavg_p.begin(), newavg_p.end());
 	return newavg;
 }
 
